@@ -3,8 +3,8 @@ import { Offer } from "./offer.model";
 export interface Subscription {
     id: string;
     name: string;
-    line: string;
-    // Add other properties as needed
+    type: string;
+    line: number;
 }
 
 export interface OffersState {
