@@ -1,8 +1,21 @@
-import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+// src/app/app.config.ts
 
-import { routes } from './app.routes';
+import { ApplicationConfig } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { authReducer } from './state/auth/auth.reducer';
+import { offersReducer } from './state/offers/offers.reducer';
+import { AuthEffects } from './state/auth/auth.effects';
+import { OffersEffects } from './state/offers/offers.effects';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes)]
+  providers: [
+    provideHttpClient(),
+    provideStore({
+      auth: authReducer,
+      offers: offersReducer,
+    }),
+    provideEffects([AuthEffects, OffersEffects]),
+  ]
 };
