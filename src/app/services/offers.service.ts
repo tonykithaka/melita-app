@@ -17,12 +17,13 @@ export class OffersService {
 
     constructor(private http: HttpClient, private store: Store) { }
 
-    getOffers(): Observable<Offer[]> {
+    getOffers(): Observable<{ offers: Offer[] }> {
         return this.store.select(selectAuthToken).pipe(
             take(1), // Get the current token once
             switchMap(token => {
                 const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
-                return this.http.get<Offer[]>(`${this.apiUrl}/offers`, { headers });
+                // Expect the response to be { offers: Offer[] }
+                return this.http.get<{ offers: Offer[] }>(`${this.apiUrl}/offers`, { headers });
             })
         );
     }

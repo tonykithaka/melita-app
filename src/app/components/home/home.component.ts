@@ -2,46 +2,32 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as OffersActions from '../../state/offers/offers.actions';
-import { selectOffers, selectSubscriptions } from '../../state/offers/offers.selectors';
-import { Observable, timer, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Offer } from '../../models/offer.model';
-import { Subscription as Sub } from '../../models/subscription.model';
+import * as OffersActions from '../../state/offers/offers.actions';
+import { selectOffers, selectOffersError, selectOffersLoading } from '../../state/offers/offers.selectors';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  standalone: true,
+  imports: [CommonModule]
 })
 export class HomeComponent implements OnInit {
   offers$: Observable<Offer[]> = this.store.select(selectOffers);
-  subscriptions$: Observable<Sub[]> = this.store.select(selectSubscriptions);
-  countdown = 0;
-  private countdownSubscription: Subscription | null = null;
+  error$: Observable<string | null> = this.store.select(selectOffersError);
+  loading$: Observable<boolean> = this.store.select(selectOffersLoading); // Track loading state
 
   constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.store.dispatch(OffersActions.loadOffers());
-  }
 
-  onRefresh(): void {
-    if (this.countdown === 0) {
-      this.store.dispatch(OffersActions.loadOffers());
-      this.startCountdown();
-    }
-  }
-
-  private startCountdown(): void {
-    this.countdown = 10;
-    const countdownTimer = timer(0, 1000);
-
-    this.countdownSubscription = countdownTimer.subscribe(val => {
-      this.countdown = 10 - val;
-      if (this.countdown <= 0 && this.countdownSubscription) {
-        this.countdownSubscription.unsubscribe(); // Unsubscribe when countdown reaches zero
-        this.countdownSubscription = null;       // Clear the subscription reference
-      }
+    // Subscribe to offers$ and log the offers to the console
+    this.offers$.subscribe((offers) => {
+      console.log('Offers:', JSON.stringify(offers));
     });
   }
 }

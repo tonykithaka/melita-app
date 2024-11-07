@@ -5,11 +5,14 @@ export interface Subscription {
     line: number;
 }
 
+
 export interface OffersState {
     offers: Offer[];
     subscriptions: Subscription[];
     error: string | null;
+    loading: boolean;
 }
+
 
 export interface Offer {
     id: string;
