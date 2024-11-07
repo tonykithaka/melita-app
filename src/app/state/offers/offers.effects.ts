@@ -1,5 +1,3 @@
-// src/app/state/offers/offers.effects.ts
-
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { OffersService } from '../../services/offers.service'

@@ -1,5 +1,3 @@
-// src/app/app.config.ts
-
 import { ApplicationConfig } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
