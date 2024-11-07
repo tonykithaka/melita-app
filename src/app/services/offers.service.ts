@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
 import { Offer } from '../models/offer.model';
 import { Subscription } from '../models/subscription.model';
 import { environment } from '../../environments/environments';
+import { Store } from '@ngrx/store';
+import { selectAuthToken } from '../state/auth/auth.selectors'; // Import the auth token selector
 
 @Injectable({
     providedIn: 'root'
@@ -12,19 +15,25 @@ export class OffersService {
 
     private apiUrl = environment.apiUrl;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private store: Store) { }
 
     getOffers(): Observable<Offer[]> {
-        return this.http.get<Offer[]>(`${this.apiUrl}/offers`);
+        return this.store.select(selectAuthToken).pipe(
+            take(1), // Get the current token once
+            switchMap(token => {
+                const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+                return this.http.get<Offer[]>(`${this.apiUrl}/offers`, { headers });
+            })
+        );
     }
 
     getSubscriptions(offerId: string): Observable<Subscription[]> {
-        return this.http.get<Subscription[]>(`${this.apiUrl}/offers/${offerId}/subscriptions`);
-    }
-
-    private getAuthHeaders(token: string): HttpHeaders {
-        return new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-        });
+        return this.store.select(selectAuthToken).pipe(
+            take(1),
+            switchMap(token => {
+                const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+                return this.http.get<Subscription[]>(`${this.apiUrl}/offers/${offerId}/subscriptions`, { headers });
+            })
+        );
     }
 }
