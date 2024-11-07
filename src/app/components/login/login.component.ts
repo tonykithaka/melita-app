@@ -27,7 +27,7 @@ export class LoginComponent {
   ) {
     // Initialize form with basic validation
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      username: ['', [Validators.required, Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]], // Email pattern
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
 

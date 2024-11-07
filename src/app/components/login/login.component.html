@@ -1,25 +1,26 @@
-<!-- Display loading message when login is in progress -->
 <div *ngIf="loading$ | async; else loginFormTemplate">
   <p>Loading...</p>
 </div>
-<!-- Login form with validation messages -->
+
 <ng-template #loginFormTemplate>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <label for="username">Username</label>
     <input id="username" formControlName="username" type="text" />
     <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
       <small *ngIf="loginForm.get('username')?.errors?.['required']" class="error">Username is required.</small>
+      <small *ngIf="loginForm.get('username')?.errors?.['pattern']" class="error">Enter a valid email address.</small>
     </div>
+
     <label for="password">Password</label>
     <input id="password" formControlName="password" type="password" />
     <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
       <small *ngIf="loginForm.get('password')?.errors?.['required']" class="error">Password is required.</small>
-      <small *ngIf="loginForm.get('password')?.errors?.['minlength']" class="error">Password must be at least 6
-        characters long.</small>
+      <small *ngIf="loginForm.get('password')?.errors?.['minlength']" class="error">Password must be at least 6 characters long.</small>
     </div>
+
     <button type="submit" [disabled]="loginForm.invalid">Login</button>
   </form>
-  <!-- Display error from store if login fails -->
+
   <div *ngIf="error$ | async as error">
     <p class="error">Error: {{ error }}</p>
   </div>
