@@ -1,25 +1,51 @@
-<div *ngIf="loading$ | async; else loaded">
-    <p>Loading offers...</p>
+<div class="app-container">
+  <div class="content">
+
+    <div class="container">
+      <div class="row">
+        <h1 class="app-title">Melita</h1>
+      </div>
+
+      <div class="row">
+        <div class="container">
+          <div *ngIf="loading$ | async; else loaded">
+            <p id="loading-message">Loading offers...</p>
+          </div>
+        </div>
+
+        <ng-template #loaded>
+          <div *ngIf="offers$ | async as offers; else noOffers">
+            <div>
+              <h2 class="home-header">Available Offers</h2>
+            </div>
+
+            <div class="offers-container">
+              <div class="card" *ngFor="let offer of offers">
+                <h3 id="offer-name">{{ offer.name }}</h3>
+                <p id="offer-date">Start Date: {{ offer.contractStartDate | date }}</p>
+                <p id="offer-date">End Date: {{ offer.contractEndDate| date }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="button-container">
+            <button id="refresh-button" [disabled]="refreshDisabled" (click)="refreshOffers()">
+              {{ refreshDisabled ? countdown + ' seconds remaining' : 'Refresh' }}
+            </button>
+            <button id="logout-button" (click)="logout()">Logout</button>
+          </div>
+          
+
+          <ng-template #noOffers>
+            <p>No offers available at this time.</p>
+          </ng-template>
+
+          <div *ngIf="error$ | async as error">
+            <p class="error">Error: {{ error }}</p>
+          </div>
+
+        </ng-template>
+      </div>
+    </div>
   </div>
-  
-  <ng-template #loaded>
-    <div *ngIf="offers$ | async as offers; else noOffers">
-      <h2>Available Offers</h2>
-      <ul *ngIf="offers.length > 0; else noOffers">
-        <li *ngFor="let offer of offers">
-          <h3>{{ offer.name }}</h3>
-          <p>{{ offer.contractStartDate }}</p>
-          <p>Price: {{ offer.contractStartDate }}</p>
-        </li>
-      </ul>
-    </div>
-  
-    <ng-template #noOffers>
-      <p>No offers available at this time.</p>
-    </ng-template>
-  
-    <div *ngIf="error$ | async as error">
-      <p class="error">Error: {{ error }}</p>
-    </div>
-  </ng-template>
-  
+</div>

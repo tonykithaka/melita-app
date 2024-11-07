@@ -1,0 +1,87 @@
+@import '../../../styles/variables.scss';
+.home-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+}
+
+.offers-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    width: calc(33.333% - 20px);
+
+    h3 {
+        margin: 0 0 10px;
+        font-size: 1.25em;
+        color: #333;
+    }
+
+    p {
+        margin: 5px 0;
+        color: #666;
+    }
+}
+
+.home-header {
+    text-align: center;
+    color: $primary-color;
+    width: 100%;
+    display: block;
+    font-size: 1.6rem;
+    padding: 20px;
+    font-weight: bold;
+}
+
+#offer-name {
+    color: $secondary-color;
+    font-weight: bold;
+    font-size: $font-size-base;
+}
+
+#offer-date {
+    font-size: $font-size-secondary;
+    font-weight: 500;
+}
+
+#refresh-button {
+    background-color: transparent;
+    border-radius: 5px;
+    border: 2px solid $primary-color;
+    font-size: $font-size-secondary;
+    font-weight: 500;
+}
+
+#logout-button {
+    background-color: $primary-color;
+    border-radius: 5px;
+    color: $error-color;
+    border: 1px solid $primary-color;
+    font-size: $font-size-secondary;
+    font-weight: 500;
+}
