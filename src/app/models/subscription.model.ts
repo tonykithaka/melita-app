@@ -1,5 +1,3 @@
-import { Offer } from "./offer.model";
-
 export interface Subscription {
     id: string;
     name: string;
@@ -11,4 +9,11 @@ export interface OffersState {
     offers: Offer[];
     subscriptions: Subscription[];
     error: string | null;
+}
+
+export interface Offer {
+    id: string;
+    name: string;
+    contractStartDate: string;
+    contractEndDate: string;
 }
