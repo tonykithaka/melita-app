@@ -1,27 +1,58 @@
-<div *ngIf="loading$ | async; else loginFormTemplate">
-  <p>Loading...</p>
-</div>
+<div class="login-container">
+  <div class="content">
+    <div class="row">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4">
+            <h1 class="login-title">Melita</h1>
+            <div id="loading-message" *ngIf="loading$ | async; else loginFormTemplate">
+              <p>Loading...</p>
+            </div>
+            <ng-template #loginFormTemplate>
+              <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                  <div class="floating-label">
+                    <input id="username" formControlName="username" type="text" placeholder=" " />
+                    <label for="username">Username</label>
+                  </div>
+                  <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
+                    <small *ngIf="loginForm.get('username')?.errors?.['required']" class="error">Username is
+                      required.</small>
+                    <small *ngIf="loginForm.get('username')?.errors?.['pattern']" class="error">Enter a valid email
+                      address.</small>
+                  </div>
+                </div>
 
-<ng-template #loginFormTemplate>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <label for="username">Username</label>
-    <input id="username" formControlName="username" type="text" />
-    <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
-      <small *ngIf="loginForm.get('username')?.errors?.['required']" class="error">Username is required.</small>
-      <small *ngIf="loginForm.get('username')?.errors?.['pattern']" class="error">Enter a valid email address.</small>
+                <div class="form-group">
+                  <div class="floating-label">
+                    <input id="password" formControlName="password" [type]="passwordVisible ? 'text' : 'password'"
+                      placeholder=" " />
+                    <label for="password">Password</label>
+                    <span class="toggle-password" (click)="togglePasswordVisibility()">
+                      <i class="icon-eye"></i>
+                    </span>
+                  </div>
+                  <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+                    <small *ngIf="loginForm.get('password')?.errors?.['required']" class="error">Password is
+                      required.</small>
+                    <small *ngIf="loginForm.get('password')?.errors?.['minlength']" class="error">Password must be at
+                      least 6
+                      characters long.</small>
+                  </div>
+                </div>
+                <div class="button-container">
+                  <button type="submit" id="login-button" [disabled]="loginForm.invalid">Login</button>
+                </div>
+              </form>
+              <div *ngIf="error$ | async as error">
+                <p class="error">Error: {{ error }}</p>
+              </div>
+            </ng-template>
+          </div>
+          <div class="col-sm-4"></div>
+        </div>
+      </div>
     </div>
-
-    <label for="password">Password</label>
-    <input id="password" formControlName="password" type="password" />
-    <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
-      <small *ngIf="loginForm.get('password')?.errors?.['required']" class="error">Password is required.</small>
-      <small *ngIf="loginForm.get('password')?.errors?.['minlength']" class="error">Password must be at least 6 characters long.</small>
-    </div>
-
-    <button type="submit" [disabled]="loginForm.invalid">Login</button>
-  </form>
-
-  <div *ngIf="error$ | async as error">
-    <p class="error">Error: {{ error }}</p>
   </div>
-</ng-template>
+</div>

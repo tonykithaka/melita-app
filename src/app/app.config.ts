@@ -35,6 +35,7 @@ import { provideRouter } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { authReducer } from './state/auth/auth.reducer';
 import { offersReducer } from './state/offers/offers.reducer';
@@ -45,7 +46,7 @@ import { appRoutes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoutes),
-    importProvidersFrom(HttpClientModule), // Ensure ReactiveFormsModule is imported here
+    importProvidersFrom(HttpClientModule, NgbModule),
     provideStore({
       auth: authReducer,
       offers: offersReducer,

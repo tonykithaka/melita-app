@@ -19,6 +19,9 @@ export class LoginComponent {
   error$ = this.store.select(selectAuthError);
   isAuthenticated$ = this.store.select(selectIsAuthenticated);
   loading$ = this.store.select(selectAuthLoading);
+  passwordVisible = false;
+
+
 
   constructor(
     private fb: FormBuilder,
@@ -44,5 +47,9 @@ export class LoginComponent {
       const { username, password } = this.loginForm.value;
       this.store.dispatch(AuthActions.login({ username, password }));
     }
+  }
+
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
   }
 }
