@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
     this.store.dispatch(OffersActions.loadOffers());
   }
 
-  // Logout function
+
   logout(): void {
     this.store.dispatch(AuthActions.logout());
   }
